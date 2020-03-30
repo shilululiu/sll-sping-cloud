@@ -1,6 +1,5 @@
-package com.sll.sllspingcloud;
-
-import org.junit.jupiter.api.Test;
+package com.sll;
+import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
