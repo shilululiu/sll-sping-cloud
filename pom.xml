@@ -20,6 +20,15 @@
 
     <dependencies>
 
+
+        <!-- 布隆过滤器 -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>22.0</version>
+        </dependency>
+
+
         <!-- Redis -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -60,6 +69,11 @@
                     <artifactId>junit-vintage-engine</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>3.0.0</version>
         </dependency>
     </dependencies>
 
