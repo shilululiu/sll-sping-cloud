@@ -16,7 +16,7 @@ public class BloomTest {
     RedisBloomFilterUtil redisBloomFilter;
 
     private static BloomFilterHelper<CharSequence> bloomFilterHelper;
-    @Scheduled(fixedDelay = 5000)
+    //@Scheduled(fixedDelay = 5000)
     public  void test(){
 
             bloomFilterHelper = new BloomFilterHelper<>(Funnels.stringFunnel(Charset.defaultCharset()), 10000, 0.01);
