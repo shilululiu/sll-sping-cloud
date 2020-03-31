@@ -1,5 +1,6 @@
 package com.sll.common.utils.thread;
 
+import java.util.Date;
 import java.util.concurrent.*;
 
 /**
@@ -87,16 +88,103 @@ public class PoolTest {
 
     //固定大小的线程池newFixedThreadPool实例：
 
+    private static Runnable getThread(final int i) {
+        return new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(i+"    ");
+            }
+        };
+    }
+
+    public static void main(String args[]) {
+        long time = new Date().getTime();
+        ExecutorService fixPool = Executors.newFixedThreadPool(100);
+        for (int i = 0; i < 1000; i++) {
+            fixPool.execute(getThread(i));
+        }
+        fixPool.shutdown();
+        long time2 = new Date().getTime();
+        System.out.println(time2-time);
+    }
+
 
     //单个线程线程池newCachedThreadPool实例：
+
+    /*private static Runnable getThread(final int i){
+        return new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(1000);
+                }catch (Exception e){
+
+                }
+                System.out.println(i);
+            }
+        };
+    }
+
+    public static  void main(String args[]){
+        ExecutorService cachePool = Executors.newCachedThreadPool();
+        for (int i=1;i<=10;i++){
+            cachePool.execute(getThread(i));
+        }
+    }
+
+   // 这里没用调用shutDown方法，这里可以发现过60秒之后，会自动释放资源。
+    */
 
 
     //缓存线程池newSingleThreadExecutor实例:
 
 
+   /* private static Runnable getThread(final int i){
+        return new Runnable() {
+            @Override
+            public void run() {
+                try {
+
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(i);
+            }
+        };
+    }
+
+    public static void main(String args[]) throws InterruptedException {
+        ExecutorService singPool = Executors.newSingleThreadExecutor();
+        for (int i=0;i<10;i++){
+            singPool.execute(getThread(i));
+        }
+        singPool.shutdown();
+        这里需要注意一点，newSingleThreadExecutor和newFixedThreadPool一样，在线程池中没有任务时可执行，也不会释放系统资源的，所以需要shudown。
+        */
+
+
     //定时线程池newScheduledThreadPool实例:
+    /*public static void main(String args[]) {
 
-
+        ScheduledExecutorService ses = Executors.newScheduledThreadPool(10);
+        ses.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(4000);
+                    System.out.println(Thread.currentThread().getId() + "执行了");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, 0, 2, TimeUnit.SECONDS);
+    }*/
 
 
 
