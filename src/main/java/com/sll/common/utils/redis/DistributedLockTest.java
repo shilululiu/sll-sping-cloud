@@ -1,4 +1,4 @@
-package com.sll.common.utils;
+package com.sll.common.utils.redis;
 
 
 import org.springframework.beans.factory.annotation.Autowired;

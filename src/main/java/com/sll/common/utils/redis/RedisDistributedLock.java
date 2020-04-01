@@ -1,4 +1,4 @@
-package com.sll.common.utils;
+package com.sll.common.utils.redis;
 
 
 import redis.clients.jedis.Jedis;

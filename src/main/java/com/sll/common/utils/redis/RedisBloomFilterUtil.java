@@ -1,4 +1,4 @@
-package com.sll.common.utils;
+package com.sll.common.utils.redis;
 
 
 import com.google.common.base.Preconditions;

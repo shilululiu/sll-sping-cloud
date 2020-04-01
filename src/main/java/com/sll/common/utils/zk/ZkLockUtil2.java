@@ -4,10 +4,10 @@ import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.locks.*;
 import org.springframework.util.Assert;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class ZkLockUtil2 {
@@ -18,7 +18,7 @@ public class ZkLockUtil2 {
     //EPHEMERAL                 临时节点， 客户端session超时这类节点就会被自动删除
     //EPHEMERAL_SEQUENTIAL      临时自动编号节点
     // ZooKeeper 锁节点路径, 分布式锁的相关操作都是在这个节点上进行
-    private final String lockPath = "/distributed-lock";
+    private final static String lockPath = "/distributed-lock";
 
 
     public void sharedLock() throws Exception {
@@ -41,6 +41,56 @@ public class ZkLockUtil2 {
         // lock2 尝试获取锁成功, 因为锁已经被释放
        lock2.acquire(2, TimeUnit.SECONDS);
         lock2.release();
+    }
+
+
+
+
+
+    private static Runnable getThread(final int i) {
+        return new Runnable() {
+            @Override
+            public void run() {
+                try {
+
+                    CuratorFramework client = ZkClientUtil.build();
+                    client.start();
+                    // 创建可重入锁
+                    InterProcessLock lock = new InterProcessMutex(client, lockPath);
+
+
+                    try {
+                        lock.acquire();
+                        System.out.println("加锁");
+                    } finally {
+                        lock.release();
+                        System.out.println("解锁");
+                    }
+
+
+
+                    List<String> list = client.getChildren().forPath(lockPath);
+                    for (String string : list) {
+                        System.out.println(string);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                System.out.println(i+"    ");
+            }
+        };
+    }
+
+    public static void main(String args[]) {
+        long time = new Date().getTime();
+        ExecutorService fixPool = Executors.newFixedThreadPool(5);
+        for (int i = 0; i < 5; i++) {
+            fixPool.execute(getThread(i));
+        }
+        fixPool.shutdown();
+        long time2 = new Date().getTime();
+        System.out.println(time2-time);
     }
 
 

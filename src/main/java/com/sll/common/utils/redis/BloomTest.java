@@ -1,11 +1,10 @@
-package com.sll.common.utils;
+package com.sll.common.utils.redis;
 
 
 import com.google.common.hash.Funnels;
 import com.sll.application.config.BloomFilterHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.Scheduled;
 
 import java.nio.charset.Charset;
 
