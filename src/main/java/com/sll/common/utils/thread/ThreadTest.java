@@ -12,7 +12,7 @@ import java.util.concurrent.FutureTask;
  **/
 public class ThreadTest {
 
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
+   /* public static void main(String[] args) throws ExecutionException, InterruptedException {
 
         //继承Thread类
         for (int i = 0; i < 10; i++) {
@@ -37,5 +37,5 @@ public class ThreadTest {
 
 
 
-    }
+    }*/
 }

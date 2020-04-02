@@ -20,14 +20,40 @@
 
     <dependencies>
 
-        <!-- https://mvnrepository.com/artifact/junit/junit -->
+        <!--分布式锁-->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
+            <groupId>com.github.jedis-lock</groupId>
+            <artifactId>jedis-lock</artifactId>
+            <version>1.0.0</version>
         </dependency>
 
+
+
+        <!--        去除对默认日志的依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <!-- 去除对默认日志的依赖 -->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- 添加 log4j 依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging-api</artifactId>
+            <version>1.1</version>
+        </dependency>
 
 
         <!-- zk  -->

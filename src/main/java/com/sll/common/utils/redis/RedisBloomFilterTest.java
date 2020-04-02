@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import java.nio.charset.Charset;
 
 @Configuration
-public class BloomTest {
+public class RedisBloomFilterTest {
 
     @Autowired
     RedisBloomFilterUtil redisBloomFilter;

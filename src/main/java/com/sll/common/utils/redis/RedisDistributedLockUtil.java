@@ -1,15 +1,19 @@
 package com.sll.common.utils.redis;
 
 
+import com.github.jedis.lock.JedisLock;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.params.SetParams;
 
 import java.util.Collections;
 
-public class RedisDistributedLock {
+public class RedisDistributedLockUtil {
 
     private static final String LOCK_SUCCESS = "OK";
     private static final Long RELEASE_SUCCESS = 1L;
+
+    private static final String LOCK_KEY  = "lockKey";
+    private static final Integer LOCK_TIME = 2000;
 
     /**
      * 尝试获取分布式锁
@@ -51,6 +55,31 @@ public class RedisDistributedLock {
         return false;
 
     }
+
+
+
+    public static  JedisLock get(Jedis jedis){
+        JedisLock jedisLock = new JedisLock(jedis,LOCK_KEY,LOCK_TIME,LOCK_TIME);
+       return jedisLock;
+    }
+
+
+
+
+    public  static  void  lock(Jedis jedis,String key,int i) throws InterruptedException {
+        JedisLock jedisLock = new JedisLock(jedis,key,i,i);
+        jedisLock.acquire();
+    }
+
+    public static  void  unlock(Jedis jedis,String key,int i) throws InterruptedException {
+        JedisLock jedisLock = new JedisLock(jedis,key,i,i);
+        jedisLock.release();
+    }
+
+
+
+
+
 
 
 
