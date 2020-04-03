@@ -17,7 +17,7 @@ public class ZkLockUtil {
 
 
 
-
+    //基于zk的分布式锁
     public static InterProcessLock get(){
         CuratorFramework client = ZkClientBean.build();
         InterProcessLock lock = new InterProcessMutex(client, lockPath);

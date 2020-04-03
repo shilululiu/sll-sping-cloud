@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
 public class ZkLockTest {
 
 
-    @Scheduled(fixedDelay = 5000)
+    //@Scheduled(fixedDelay = 5000)
     public void test(){
 
 

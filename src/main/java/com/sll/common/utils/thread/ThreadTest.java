@@ -12,7 +12,7 @@ import java.util.concurrent.FutureTask;
  **/
 public class ThreadTest {
 
-   /* public static void main(String[] args) throws ExecutionException, InterruptedException {
+   public static void main(String[] args) throws ExecutionException, InterruptedException {
 
         //继承Thread类
         for (int i = 0; i < 10; i++) {
@@ -20,7 +20,7 @@ public class ThreadTest {
             threadDemo.start();
         }
 
-        //实现Runnable 接口
+     /*   //实现Runnable 接口
         RunnableDemo runnableDemo = new RunnableDemo();
         new Thread(runnableDemo).start();
 
@@ -31,11 +31,11 @@ public class ThreadTest {
         List<Integer> lists = (List<Integer>)futureTask.get(); //获取返回值
         for (Integer integer : lists) {
             System.out.print(integer + "  ");
-        }
+        }*/
 
 
 
 
 
-    }*/
+    }
 }

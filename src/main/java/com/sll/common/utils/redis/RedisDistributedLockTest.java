@@ -19,48 +19,67 @@ public class RedisDistributedLockTest {
 
     @Autowired
     public JedisPool jedisPool;
-    //@Scheduled(fixedDelay = 5000)
+   /* //@Scheduled(fixedDelay = 500000)
     public void test(){
         long time = new Date().getTime();
-        ExecutorService fixPool = Executors.newFixedThreadPool(5);
-        for (int i = 0; i < 5; i++) {
+        ExecutorService fixPool = Executors.newFixedThreadPool(10);
+        for (int i = 0; i < 20; i++) {
             fixPool.execute(getThread(i));
         }
         long time2 = new Date().getTime();
-        System.out.println(time2-time);
+        System.out.println("************************");
+    }
+*/
+
+    public  static   int count =20;
+    public static void main(String[] args) {
+
+        long time = new Date().getTime();
+        ExecutorService fixPool = Executors.newFixedThreadPool(10);
+        for (int i = 0; i < 20; i++) {
+            fixPool.execute(getThread(i));
+        }
+        long time2 = new Date().getTime();
+        System.out.println("************************");
+        fixPool.shutdown();
     }
 
-    private  Runnable getThread(final int i) {
+
+
+
+    private static   Runnable getThread(final int i) {
 
         return new Runnable() {
             @Override
             public void run() {
-                Jedis resource = jedisPool.getResource();
+                Jedis resource = new Jedis("127.0.0.1",6379);
                 JedisLock jedisLock = RedisDistributedLockUtil.get(resource);
-                try {
+               try {
                     jedisLock.acquire();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 try {
                     //获得锁
-                    RedisDistributedLockUtil.lock(resource,"uu",2000);
-                    System.out.println(i+"获得锁");
-                    if(i==2){
-                        //该代码块是为了验证效果
-                        System.out.println(i+"睡眠2秒....");
-                        Thread.sleep(2000);
+                  //  System.out.println(i+"获得锁");
+
+                    if (count!=15){
+                        System.out.println(i+"买了一个");
+                        count = count-1;
                     }
+                    System.out.println("商品还有"+count);
+
+
                 }catch (Exception e){
                     e.printStackTrace();
-                }finally {
-                    System.out.println(i+"释放锁");
+                }
+                //    System.out.println(i+"释放锁");
                      //释放锁
-                     jedisLock.release();
+                    jedisLock.release();
                     if(resource!=null){
                        resource.close();
                     }
-                }
+
             }
 
 
