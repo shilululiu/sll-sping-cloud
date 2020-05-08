@@ -1,0 +1,19 @@
+feign:
+ compression:
+  request:
+   enabled: true
+   mime-types: text/xml,application/xml,application/json #文件类型
+   min-request-size: 2048 #大于后将压缩
+  response:
+    enabled: true
+ httpclient:
+  enabled: false #禁用默认的http
+ okhttp:
+  enabled: true #启用okhttp
+  hystrix:
+    enabled=true: true # feign启用hystrix，才能熔断、降级
+
+
+
+
+

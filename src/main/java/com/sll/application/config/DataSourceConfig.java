@@ -2,14 +2,12 @@ package com.sll.application.config;
 
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.mysql.cj.jdbc.MysqlDataSource;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-
 import javax.sql.DataSource;
+import com.mysql.cj.jdbc.MysqlDataSource;
 import java.sql.SQLException;
+
 
 /**
  * Demo class
@@ -20,21 +18,30 @@ import java.sql.SQLException;
 @Configuration
 public class DataSourceConfig {
 
-    @Value("${metouch.datasource.driver-class-name}")
+    //@Value("${metouch.datasource.driver-class-name}")
     private String driverClassName;
-    @Value("${metouch.datasource.url}")
+
+   // @Value("${metouch.datasource.url}")
     private String jdbcUrl;
-    @Value("${metouch.datasource.username}")
+
+   // @Value("${metouch.datasource.username}")
     private String userName;
 
-    @Value("${metouch.datasource.databasename}")
+   // @Value("${metouch.datasource.databasename}")
     private String databasename;
 
-    @Value("${metouch.datasource.enc-text}")
+   // @Value("${metouch.datasource.enc-text}")
     private String rdsEncText;
 
-    @Value("${spring.profiles.active}")
+   // @Value("${spring.profiles.active}")
     private String active;
+
+   // @Value("${RdsEncryptDataKey}")
+    private String rdsEncryptDataKey;
+
+   // @Value("${RdsCertPath}")
+    private String rdsCertPath;
+
 
     @Bean
     public DataSource dataSource() {
@@ -53,7 +60,7 @@ public class DataSourceConfig {
         dataSource.setServerName(jdbcUrl);
         dataSource.setPort(3306);
         dataSource.setUser("root");
-        dataSource.setPassword("000000");
+        dataSource.setPassword("");
         dataSource.setDatabaseName(databasename);
         try {
             dataSource.setCharacterEncoding("UTF-8");

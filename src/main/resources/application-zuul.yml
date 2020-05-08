@@ -1,0 +1,82 @@
+  #使用Eureka负载路由方式
+server:
+  port: 8080
+spring:
+  application:
+    name: zuul
+# 配置Eureka地址
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+# 构建路由地址
+zuul:
+  routes:
+    # 这里可以自定义
+    demo2:
+      # 匹配的路由规则
+      path: /demo/**
+      # 路由的目标服务名
+      serviceId: demo
+      stripPrefix: false # 关闭全局前缀
+  ignored-patterns: /demo2/** # 不路由demo2开头的任意请求
+  # 允许敏感头，设置为空就行了
+  sensitive-headers:
+  prefix: /api  #全局前缀
+    strip-prefix: true
+
+
+
+
+
+ #不使用eureka负载方式路由，采取请求地址路由
+  server:
+    port: 8080
+  spring:
+    application:
+      name: zuul
+  # 配置eureka地址
+  eureka:
+    client:
+      service-url:
+        defaultZone: http://localhost:8761/eureka/
+  # 构建路由地址
+  zuul:
+    routes:
+      # 这里可以自定义
+      demo2:
+        # 匹配的路由规则
+        path: /demo/**
+        # 路由的目标服务名
+        url: demo
+  # 关闭使用eureka负载路由
+  ribbon:
+    eureka:
+      enabled: false
+  # 如果不使用eureka的话，需要自己定义路由的那个服务的其他负载服务
+  demo:
+    ribbon:
+      # 这里写你要路由的demo服务的所有负载服务请求地址，本项目只启动一个，因此只写一个
+      listOfServers: http://localhost:8090/
+
+
+
+
+
+
+
+  #如果不想依赖于Eureka使用zuul，那么可使用以下配置方式
+    server:
+      port: 8080
+    spring:
+      application:
+        name: zuul
+    # 构建路由地址
+    zuul:
+      routes:
+        # 这里可以自定义
+        demo2:
+          # 匹配的路由规则
+          path: /demo/**
+          # 路由的目标地址
+          url: http://localhost:8090/

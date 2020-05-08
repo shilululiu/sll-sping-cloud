@@ -1,0 +1,140 @@
+#eureka 服务端配置
+server:
+  port: 8001 #端口
+spring:
+  application:
+    name: eureka-ha  #服务名 应用名称，将会显示在Eureka界面的应用名称列
+eureka:
+  instance:  #定义Eureka实例
+    # 服务失效时间，失效的服务将被剔除。单位：秒，默认：90
+    lease-expiration-duration-in-seconds: 90
+    # 服务续约（心跳）频率，单位：秒，缺省30
+    lease-renewal-interval-in-seconds:  30
+    # 状态页面的URL，相对路径，默认使用 HTTP 访问，如需使用 HTTPS则要使用绝对路径配置，缺省：/info
+    status-page-url-path: /info
+    # 健康检查页面的URL，相对路径，默认使用 HTTP 访问，如需使用 HTTPS则要使用绝对路径配置，缺省：/health
+    health-check-url-path: /health
+    non-secure-port-enabled: true   #开启不安全通信的端口，就是使用http进行通信
+    non-secure-port: ${server.port:7001}  #设置不安全端口号
+    secure-port-enabled: false #开启安全通信的端口，就是使用https进行通信
+    secure-port: 443 #设置安全通信的端口号
+    prefer-ip-address: true #使用ip地址来注册到服务中心，显示的是实例名称
+    ip-address: 192.168.1.108 #设置访问服务的ip地址，一般设置ip-address，都是因为需要通过外网来访问该服务，通常设置为公网ip
+    instance-id: ${eureka.instance.ip-address}:${server.port} #设置 注册服务中心，显示的实例名称
+    hostname: server1 #Eureka实例所在的主机名
+  client:
+    fetch-registry: false  # false表示自己就是注册中心。我的职责就是维护服务实例，并不需要去检索服务    集群为true
+    register-with-eureka: false   # false表示自己不需要向注册中心注册自己   集群为true
+    prefer-same-zone-eureka: true
+      #地区
+      region: beijing
+      availability-zones:
+        beijing: zone-2,zone-1
+      service-url:
+        zone-1: http://localhost:30000/eureka/
+        zone-2: http://localhost:30001/eureka/
+      serviceUrl:
+        #defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/      # 设置与Eureka Server交互的地址查询服务和注册服务都需要依赖这个地址(单机版)
+        defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/   # 集群版
+  security:
+    basic:
+      enabled: true # 开启basic认证
+    user:
+      name: root # 用户名
+      password: admin # 密码
+     # http://${security.user.name}:${security.user.password}@${eureka.instance.hostname}:${server.port}/eureka/
+
+
+
+
+
+
+ #服务提供者配置
+  spring:
+    application:
+      name: service
+  server:
+    port: 30010
+  eureka:
+    instance:
+      prefer-ip-address: true
+      status-page-url-path: /actuator/info
+      health-check-url-path: /actuator/health
+      metadata-map:
+        zone: zone-1
+    client:
+      register-with-eureka: true
+      fetch-registry: true
+      prefer-same-zone-eureka: true
+      #地区
+      region: beijing
+      availability-zones:
+        beijing: zone-1,zone-2
+      service-url:
+        zone-1: http://localhost:30000/eureka/
+        zone-2: http://localhost:30001/eureka/
+
+
+    spring:
+      application:
+        name: service
+    server:
+      port: 30011
+    eureka:
+      instance:
+        prefer-ip-address: true
+        status-page-url-path: /actuator/info
+        health-check-url-path: /actuator/health
+        metadata-map:
+          zone: zone-2
+      client:
+        register-with-eureka: true
+        fetch-registry: true
+        prefer-same-zone-eureka: true
+        #地区
+        region: beijing
+        availability-zones:
+          beijing: zone-2,zone-1
+        service-url:
+          zone-1: http://localhost:30000/eureka/
+          zone-2: http://localhost:30001/eureka/
+
+
+
+
+    #消费者配置
+
+      spring:
+        application:
+          name: consumer
+      server:
+        port: 30030
+      eureka:
+        instance:
+          prefer-ip-address: true
+          status-page-url-path: /actuator/info
+          health-check-url-path: /actuator/health
+          metadata-map:
+            zone: zone-1
+        client:
+          register-with-eureka: true
+          fetch-registry: true
+          prefer-same-zone-eureka: true
+          #地区
+          region: beijing
+          availability-zones:
+            beijing: zone-1,zone-2
+          service-url:
+            zone-1: http://localhost:30000/eureka/
+            zone-2: http://localhost:30001/eureka/
+
+
+            #参考https://segmentfault.com/a/1190000014107639     https://www.cnblogs.com/zyon/p/11023750.html
+
+
+
+            #eureka.instance前缀的配置项中，这几个配置项绝对烧脑，根据周立的博客，在eureka.instance.prefer-ip-address = true时，实例优先使用eureka.instance.ip-address的值进行注册，如果没有配置eureka.instance.ip-address，则使用第一个非回环IP地址进行注册。
+            #而当eureka.instance.prefer-ip-address = false时，同样的方式可以查看实例注册地址采用了主机名eureka.instance.hostname的值
+            #spring.application.name和eureka.instance.appname
+            #同时配置时，eureka.instance.appname优先级更高。
+            #如果没有配置eureka.instance.appname，则使用spring.application.name的值，如果连spring.application.name都没有配置，则取unknown

@@ -1,0 +1,18 @@
+# 集群监控
+
+spring:
+ application:
+  name: springcloud-turbine
+server:
+ port: 9900
+eureka:
+ client:
+  service-url:
+   defaultZone: http://localhost:9090/eureka
+turbine:
+ combine-host-port: true
+ app-config: eureka-consumer-ribbon,eureka-consumer-ribbon2
+ cluster-name-expression: metadata['cluster']
+ aggregator:
+  cluster-config: ribbon
+ instanceUrlSuffix: /hystrix.stream
