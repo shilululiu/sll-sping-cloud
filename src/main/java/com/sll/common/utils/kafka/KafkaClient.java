@@ -53,8 +53,14 @@ public class KafkaClient {
     }
 
 
+
+    //linxu  bat 改sh
     //win 创建主题 kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic sll
-    //查看主题  kafka-topics.bat --list --zookeeper localhost:2181 sll
+    //查看主题  kafka-topics.bat --list --zookeeper localhost:2181
+    //查看主题详情 kafka-topics.bat --zookeeper localhost:2181 --describe --topic sll
+    //删除主题 kafka-topics.bat --delete --zookeeper localhost:2181 --topic sll2
+    // .\bin\windows\kafka-server-start.bat .\config\server.properties
+
 
 
 

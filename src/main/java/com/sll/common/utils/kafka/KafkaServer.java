@@ -25,8 +25,6 @@ public class KafkaServer {
         producer.send(record);
         //关闭
         producer.close();
-
-
     }
 
 
@@ -37,11 +35,11 @@ public class KafkaServer {
         properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,brokerList);
         // 设置key序列化器
         // properties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 
         // 设置值序列化器
         // properties.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 
         // 设置重试次数
         properties.put(ProducerConfig.RETRIES_CONFIG, 10);
