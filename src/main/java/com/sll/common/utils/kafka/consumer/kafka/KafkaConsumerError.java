@@ -1,4 +1,4 @@
-package com.sll.common.utils.kafka.springboot;
+package com.sll.common.utils.kafka.consumer.kafka;
 
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.common.TopicPartition;
@@ -23,7 +23,7 @@ public class KafkaConsumerError {
 
     private static final Logger log= LoggerFactory.getLogger(KafkaConsumerError.class);
 
-    @KafkaListener(id = "err", topics = "sll",containerFactory="KafkaConsumerListener" ,errorHandler = "consumerAwareErrorHandler")
+    @KafkaListener(id = "err", topics = "sll",containerFactory="MyKafkaConsumerListener" ,errorHandler = "MyConsumerAwareErrorHandler")
     public void errorListener(String data) {
         log.info("topic.quick.error  receive : " + data);
         throw new RuntimeException("fail");

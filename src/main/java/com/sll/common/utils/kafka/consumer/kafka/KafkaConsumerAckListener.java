@@ -1,23 +1,16 @@
-package com.sll.common.utils.kafka.springboot;
+package com.sll.common.utils.kafka.consumer.kafka;
 
 
 
-import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.IntegerDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.listener.AbstractMessageListenerContainer;
-import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -27,8 +20,7 @@ import java.util.Map;
 //ack
 public class KafkaConsumerAckListener {
 
-    @Autowired
-    KafkaTemplate kafkaTemplate;
+
 
     private static final Logger log= LoggerFactory.getLogger(KafkaConsumerAckListener.class);
 
@@ -55,17 +47,17 @@ public class KafkaConsumerAckListener {
 
 
 
-    @KafkaListener(id = "ack", topics = "topic.quick.ack",containerFactory = "KafkaConsumerAckListener")
+   /* @KafkaListener(id = "ack", topics = "topic.quick.ack",containerFactory = "KafkaConsumerAckListener")
     public void ackListener(ConsumerRecord record, Acknowledgment ack) {
         log.info("topic.quick.ack receive : " + record.value());
         ack.acknowledge();
-    }
+    }*/
 
 
 
 
-    @KafkaListener(id = "ack", topics = "topic.quick.ack", containerFactory = "KafkaConsumerAckListener")
-    public void ackListener2(ConsumerRecord record, Acknowledgment ack,Consumer<?, ?>  consumer) {
+   /* @KafkaListener(id = "ack", topics = "topic.quick.ack", containerFactory = "KafkaConsumerAckListener")
+    public void ackListener2(ConsumerRecord record, Acknowledgment ack, Consumer<?, ?> consumer) {
         log.info("topic.quick.ack receive : " + record.value());
 
         //如果偏移量为偶数则确认消费，否则拒绝消费
@@ -78,13 +70,13 @@ public class KafkaConsumerAckListener {
 
         }
     }
+*/
 
 
 
 
-
-    @KafkaListener(id = "ack", topics = "topic.quick.ack", containerFactory = "KafkaConsumerAckListener")
-    public void ackListener1(ConsumerRecord record, Acknowledgment ack, Consumer<?, ?>  consumer) {
+    /*@KafkaListener(id = "ack", topics = "topic.quick.ack", containerFactory = "KafkaConsumerAckListener")
+    public void ackListener1(ConsumerRecord record, Acknowledgment ack, Consumer<?, ?> consumer) {
         log.info("topic.quick.ack receive : " + record.value());
 
         //如果偏移量为偶数则确认消费，否则拒绝消费
@@ -95,7 +87,7 @@ public class KafkaConsumerAckListener {
             log.info(record.offset()+"--nack");
             consumer.seek(new TopicPartition("topic.quick.ack",record.partition()),record.offset() );
         }
-    }
+    }*/
 
 
 

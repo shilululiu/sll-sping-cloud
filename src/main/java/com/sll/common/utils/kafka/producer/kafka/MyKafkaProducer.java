@@ -1,10 +1,9 @@
-package com.sll.common.utils.kafka.springboot;
+package com.sll.common.utils.kafka.producer.kafka;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
+import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
@@ -13,42 +12,48 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 
 @Component
-public class KafkaProducer {
+@EnableKafka
+public class MyKafkaProducer {
 
-
-
-    //kafkaTemplate实现了Kafka发送接收等功能  @Primary  多个bean  优先使用这个
-    @Bean
-    @Primary
-    public KafkaTemplate<String, String> kafkaTemplate() {
-        KafkaTemplate template = new KafkaTemplate<String, String>(producerFactory());
-        //设置默认主题  defaultKafkaTemplate.sendDefault("I`m send msg to default topic");
-        template.setDefaultTopic("sll");
-        return template;
-    }
 
 
     //根据senderProps填写的参数创建生产者工厂
     @Bean
     public ProducerFactory<String, String> producerFactory() {
-
-        DefaultKafkaProducerFactory<String, String> factory = new DefaultKafkaProducerFactory<>(senderProps());
-        //开始事务
-        factory.transactionCapable();
-        //设置事务id前缀
+        DefaultKafkaProducerFactory factory = new DefaultKafkaProducerFactory<>(senderProps());
         factory.setTransactionIdPrefix("tran-");
-        return factory ;
+        boolean b = factory.transactionCapable();
+        System.out.println("***********************"+b);
+
+        return factory;
+    }
+
+    @Bean
+    public KafkaTransactionManager transactionManager(ProducerFactory producerFactory) {
+        KafkaTransactionManager manager = new KafkaTransactionManager(producerFactory);
+        return manager;
     }
 
 
 
+
+    //kafkaTemplate实现了Kafka发送接收等功能  @Primary  多个bean  优先使用这个
+    @Bean("kafkaTemplate")
+    public KafkaTemplate<String, String> kafkaTemplate(ProducerFactory producerFactory) {
+        KafkaTemplate template = new KafkaTemplate<String, String>(producerFactory);
+        //设置默认主题  defaultKafkaTemplate.sendDefault("I`m send msg to default topic");
+        //template.setDefaultTopic("sll");
+        return template;
+    }
+
+
+
+
     //生产者配置
+    @Bean
     private Map<String, Object> senderProps (){
         Map<String, Object> props = new HashMap<>();
         //连接地址
@@ -74,19 +79,12 @@ public class KafkaProducer {
     }
 
 
-    //************************************************
-    //事务
-    @Bean
-    public KafkaTransactionManager transactionManager(ProducerFactory producerFactory) {
-        KafkaTransactionManager manager = new KafkaTransactionManager(producerFactory);
-        return manager;
-    }
 
 
 
     //***********************************************
 
-    @Autowired
+  /*  @Autowired
     KafkaTemplate kafkaTemplate;
     //同步调用
     public void testSyncSend() throws ExecutionException, InterruptedException {
@@ -95,7 +93,7 @@ public class KafkaProducer {
     //当send方法耗时大于get方法所设定的参数时会抛出一个超时异常，但需要注意，这里仅抛出异常，消息还是会发送成功的。这里的测试方法设置send耗时必须小于 一微秒
     public void testTimeOut() throws ExecutionException, InterruptedException, TimeoutException {
         kafkaTemplate.send("topic.quick.demo", "test send message timeout").get(1, TimeUnit.MICROSECONDS);
-    }
+    }*/
 
 
     /**

@@ -1,4 +1,4 @@
-package com.sll.common.utils.kafka.springboot;
+package com.sll.common.utils.kafka.producer.kafka;
 
 
 import org.apache.kafka.clients.producer.ProducerRecord;

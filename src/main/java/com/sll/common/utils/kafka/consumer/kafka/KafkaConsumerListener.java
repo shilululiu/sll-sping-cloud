@@ -1,29 +1,10 @@
-package com.sll.common.utils.kafka.springboot;
+package com.sll.common.utils.kafka.consumer.kafka;
 
-import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.common.serialization.IntegerDeserializer;
-import org.apache.kafka.common.serialization.IntegerSerializer;
-import org.apache.kafka.common.serialization.StringDeserializer;
-import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.kafka.annotation.EnableKafka;
-import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.annotation.PartitionOffset;
-import org.springframework.kafka.annotation.TopicPartition;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
-import org.springframework.kafka.core.*;
-import org.springframework.kafka.transaction.KafkaTransactionManager;
-
-import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Configuration
-@EnableKafka
 public class KafkaConsumerListener {
 
 
@@ -35,7 +16,7 @@ public class KafkaConsumerListener {
     @Bean("MyKafkaConsumerListener")
     public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(KafkaConsumerFactory.consumerFactory());
+        factory.setConsumerFactory(MyKafkaConsumerFactory.consumerFactory());
         return factory;
     }
 
@@ -45,7 +26,7 @@ public class KafkaConsumerListener {
     //@TopicPartition：topic--需要监听的Topic的名称，partitions --需要监听Topic的分区id，
     //partitionOffsets --可以设置从某个偏移量开始监听
     //@PartitionOffset：partition --分区Id，非数组，initialOffset --初始偏移量
-    @KafkaListener(id = "batchWithPartition",clientIdPrefix = "bwp",containerFactory = "KafkaConsumerListener",
+    /*@KafkaListener(id = "batchWithPartition",clientIdPrefix = "bwp",containerFactory = "KafkaConsumerListener",
             topicPartitions = {
                     @TopicPartition(topic = "topic.quick.batch.partition",partitions = {"1","3"}),
                     @TopicPartition(topic = "topic.quick.batch.partition",partitions = {"0","4"},
@@ -56,7 +37,7 @@ public class KafkaConsumerListener {
         for (String s : data) {
             System.out.println(s);
         }
-    }
+    }*/
 
 
 

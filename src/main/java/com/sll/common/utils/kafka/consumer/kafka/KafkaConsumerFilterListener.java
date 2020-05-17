@@ -1,17 +1,11 @@
-package com.sll.common.utils.kafka.springboot;
+package com.sll.common.utils.kafka.consumer.kafka;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
-import org.springframework.kafka.core.ConsumerFactory;
-import org.springframework.kafka.listener.adapter.RecordFilterStrategy;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
 
 @Component
 public class KafkaConsumerFilterListener {
@@ -23,7 +17,7 @@ public class KafkaConsumerFilterListener {
     @Bean("MyKafkaConsumerFilterListener")
     public ConcurrentKafkaListenerContainerFactory filterContainerFactory() {
         ConcurrentKafkaListenerContainerFactory factory = new ConcurrentKafkaListenerContainerFactory();
-        factory.setConsumerFactory(KafkaConsumerFactory.consumerFactory());
+        factory.setConsumerFactory(MyKafkaConsumerFactory.consumerFactory());
         //配合RecordFilterStrategy使用，被过滤的信息将被丢弃
         factory.setAckDiscarded(true);
         factory.setRecordFilterStrategy((ConsumerRecord consumerRecord)->{
@@ -38,9 +32,9 @@ public class KafkaConsumerFilterListener {
         return factory;
     }
 
-    @KafkaListener(id = "filterCons", topics = "topic.quick.filter",containerFactory = "KafkaConsumerFilterListener")
+   /* @KafkaListener(id = "filterCons", topics = "topic.quick.filter",containerFactory = "KafkaConsumerFilterListener")
     public void filterListener(String data) {
         //这里做数据持久化的操作
         log.error("topic.quick.filter receive : " + data);
-    }
+    }*/
 }

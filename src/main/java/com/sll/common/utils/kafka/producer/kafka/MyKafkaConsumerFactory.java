@@ -1,9 +1,8 @@
-package com.sll.common.utils.kafka.springboot;
+package com.sll.common.utils.kafka.producer.kafka;
 
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.stereotype.Component;
@@ -12,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class KafkaConsumerFactory {
+public class MyKafkaConsumerFactory {
 
     //根据consumerProps填写的参数创建消费者工厂
     public static ConsumerFactory<String, String> consumerFactory() {
